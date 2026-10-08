@@ -12,7 +12,9 @@ An offline, single-player autonomous driving research project for F1 25. The fir
 
 ## Project map
 
-See [architecture](docs/architecture.md) and [roadmap](docs/roadmap.md). `AGENTS.md` contains coding-agent instructions.
+See [architecture](docs/architecture.md), [roadmap](docs/roadmap.md), and [current project state](docs/project-state.md). The AI roles have separate instructions: Codex uses [`AGENTS.md`](AGENTS.md); the local gpt-oss model uses [`LOCAL_LLM_AGENTS.md`](LOCAL_LLM_AGENTS.md).
+
+For durable project memory, update `docs/project-state.md` when status changes, record accepted architectural choices in `docs/decisions/`, and add measured results to `docs/experiment-log.md`.
 
 ## Safety of experiments
 

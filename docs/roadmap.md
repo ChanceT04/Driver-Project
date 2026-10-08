@@ -2,7 +2,9 @@
 
 ## Phase 0 — Project setup
 
-Agree on this architecture, create or identify the GitHub repository, connect the local project, and record the chosen Python/runtime conventions. No game automation yet.
+Architecture and role instructions are recorded, the GitHub repository is connected, and project memory templates are in place. No game automation yet. Runtime conventions will be selected with the telemetry receiver task.
+
+Exit condition: shared project memory and boundaries are established. Complete.
 
 ## Phase 1 — Telemetry feasibility (read-only)
 
