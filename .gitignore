@@ -9,8 +9,14 @@ __pycache__/
 # Local captures, derived telemetry, and learned weights
 /data/telemetry/raw/*
 /data/telemetry/processed/*
-/runs/checkpoints/*
-/runs/logs/*
+/data/captures/
+/runs/*
+!/runs/README.md
+
+# Python package build output
+*.egg-info/
+/build/
+/dist/
 
 # Local-only settings and secrets
 .env
@@ -19,6 +25,4 @@ __pycache__/
 
 !/data/telemetry/raw/.gitkeep
 !/data/telemetry/processed/.gitkeep
-!/runs/checkpoints/.gitkeep
-!/runs/logs/.gitkeep
 

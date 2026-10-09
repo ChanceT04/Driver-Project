@@ -1,22 +1,94 @@
-# F1 25 Racing Agent
+# F1 driving agent
 
-An offline, single-player autonomous driving research project for F1 25. The first milestone is a telemetry-only recorder and feasibility study; automated control and machine learning come later.
+Train a driver that can complete a cautious lap on an unfamiliar circuit. First,
+build a fast offline 2D simulator that generates varied tracks and trains a
+policy on car-relative route previews. Later, provide the same observations
+from F1's full HUD map, player triangle and UDP telemetry.
 
-## Current scope
+## Start here
 
-- One circuit, fixed car and setup, dry conditions, and Time Trial or another repeatable offline mode.
-- Read the game's documented UDP telemetry and record it with local receive timestamps.
-- Validate a track map against recorded world positions.
-- Keep telemetry reading, controller input, simulation, and learning as separate modules.
-- Optimize valid lap time after establishing a repeatable human baseline.
+- **Agents picking up work: read [START_HERE.md](START_HERE.md) first.**
+- [Task index and implementation order](docs/tasks/README.md) — the authoritative work queue.
+- [Architecture and shared contracts](docs/architecture.md) — how the program fits together.
+- [Local developer instructions](LOCAL_LLM_AGENTS.md) — how to complete an assigned ticket.
+- [Training framework](docs/training-framework.md) — what the existing runner actually does.
+- [Testing and acceptance](docs/testing.md) — required ticket checks and evidence.
+- [Telemetry](docs/telemetry.md) and [local data inventory](data/README.md).
 
-## Project map
+## What exists today
 
-See [architecture](docs/architecture.md), [roadmap](docs/roadmap.md), and [current project state](docs/project-state.md). The AI roles have separate instructions: Codex uses [`AGENTS.md`](AGENTS.md); the local gpt-oss model uses [`LOCAL_LLM_AGENTS.md`](LOCAL_LLM_AGENTS.md).
+| State | Components |
+| --- | --- |
+| Implemented | T1 route geometry and JSON importer, synthetic oval fixture, UDP capture/decoding/reporting, valid-lap dataset export, generic episode/experiment runner |
+| Implemented prototype | T4A fixed-route 2D simulator, v1 driving observation, diagnostic route follower, episode recording and HTML replay; visual review pending |
+| Implemented scaffolding | Package metadata, offline CLI routing/help, shared config-envelope validation, zero-action baseline |
+| Interfaces awaiting implementation | Procedural tracks, T4B response/grip limits, final reward/metrics, learned policy/training assembly, HUD and game adapters |
 
-For durable project memory, update `docs/project-state.md` when status changes, record accepted architectural choices in `docs/decisions/`, and add measured results to `docs/experiment-log.md`.
+**There is no trained driver or real-game control path yet.** The T4A simulator
+is a fixed-route learning prototype, not a calibrated F1 physics model. Passing
+its offline checks does not prove learning, perception or game control.
 
-## Safety of experiments
+## Run from this checkout
 
-Initial tools are read-only. Do not send controller input, edit game files, join multiplayer, or submit leaderboard laps until the control phase is explicitly designed and reviewed. Raw telemetry and model checkpoints stay local and are excluded from Git by default.
+Python 3.10+ is sufficient for existing code. The current base package has no
+third-party runtime dependencies. The assigned feature owner adds justified
+rendering, vision or ML dependencies to `pyproject.toml`.
 
+```powershell
+python scripts/sim.py --help
+python scripts/sim.py check-config --config configs/offline.example.json
+python -m unittest discover -s tests -v
+```
+
+If this PC's `python` alias is unavailable, the interpreter previously used here is:
+
+```powershell
+& 'C:\Users\Chance Larson\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' scripts/sim.py --help
+```
+
+Optional installation in your own Python environment: `python -m pip install -e .`.
+That exposes `f1-sim` and `f1-telemetry`; source-tree scripts work without installation.
+
+## Intended complete-program workflow
+
+These command routes exist, but the feature commands currently stop with an
+explicit unfinished-ticket message. Only help and shared config checks work now.
+
+```powershell
+python scripts/sim.py preview-tracks --config configs/offline.example.json --output runs/track-preview
+python scripts/sim.py simulate --config configs/offline.example.json --route tests/fixtures/tracks/oval.json --output runs/first-drive
+python scripts/sim.py train --config configs/offline.example.json --output runs/first-training
+python scripts/sim.py evaluate --config configs/offline.example.json --checkpoint runs/first-training/policy --split validation --output runs/policy-evaluation
+python scripts/sim.py replay runs/first-drive/episode.jsonl --output runs/first-drive/replay.html
+```
+
+T1 creates the oval fixture. T4B enables `simulate` without `--route`. T6
+defines and documents the checkpoint format. T10 supplies a measured training
+config: the current example is a draft, with `agent.method: null`, and cannot
+be presented as a proven training recipe.
+
+## Directory map
+
+```text
+configs/                 small checked-in experiment configurations
+data/                    preserved telemetry, reference images, later synchronized captures
+docs/architecture.md     shared program and data contracts
+docs/tasks/              task index and bounded developer tickets
+scripts/                 source-checkout command entry points
+src/f1_agent/
+  track/                 route geometry, JSON import, procedural generation
+  environment/           car dynamics, episodes, reward, diagnostic run and replay
+  evaluation/            common observations, metrics and robustness experiments
+  policy/                diagnostic baselines and learned agent/checkpoints
+  training/              configuration, runner, training assembly, human-lap export
+  perception/            full HUD route and player triangle extraction
+  telemetry/             UDP tools and later synchronized screen capture
+  runtime/               later read-only live observation adapter
+  control/               later explicitly authorized game-input adapter
+tests/                   checks and small synthetic fixtures
+runs/                    ignored per-experiment results, replays and checkpoints
+```
+
+Simulator completion is the immediate milestone. Transfer to F1 follows
+separate capture, calibration and supervised-control tickets. No ticket is
+complete solely because its module imports or its command prints help.

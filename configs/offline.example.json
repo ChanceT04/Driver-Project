@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "experiment": {
+    "train_routes": [
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008
+    ],
+    "validation_routes": [
+      2001,
+      2002,
+      2003
+    ],
+    "test_routes": [
+      3001,
+      3002,
+      3003
+    ],
+    "train_episodes": 200,
+    "max_steps": 12000,
+    "validate_every": 20,
+    "episode_seed": 42,
+    "evaluation_repeats": 3
+  },
+  "track": {
+    "length_m": [
+      600,
+      1800
+    ],
+    "width_m": [
+      10,
+      14
+    ],
+    "minimum_corner_radius_m": 30,
+    "max_generation_attempts": 100
+  },
+  "vehicle": {
+    "time_step_s": 0.05,
+    "wheelbase_m": 3.6,
+    "max_steering_rad": 0.35,
+    "steering_response_s": 0.2,
+    "max_acceleration_mps2": 8,
+    "max_braking_mps2": 12,
+    "max_speed_mps": 35,
+    "drag_coefficient_per_m": 0.003,
+    "max_lateral_acceleration_mps2": 12,
+    "command_delay_s": 0
+  },
+  "observation": {
+    "schema_version": 1,
+    "lookahead_m": [
+      5,
+      10,
+      20,
+      40,
+      70,
+      100
+    ],
+    "speed_scale_mps": 40,
+    "distance_scale_m": 100
+  },
+  "reward": {
+    "forward_progress_weight": 1,
+    "time_penalty_per_s": 0.05,
+    "departure_penalty": 10,
+    "lap_bonus": 50
+  },
+  "agent": {
+    "method": null,
+    "hidden_sizes": [
+      64,
+      64
+    ]
+  },
+  "randomization": {
+    "enabled": false,
+    "start_offset_m": [
+      0,
+      0
+    ],
+    "start_heading_error_rad": [
+      0,
+      0
+    ],
+    "grip_multiplier": [
+      1,
+      1
+    ],
+    "command_delay_s": [
+      0,
+      0
+    ],
+    "observation_noise_m": [
+      0,
+      0
+    ]
+  }
+}

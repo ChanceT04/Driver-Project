@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "frame": "map_metres",
+  "points": [
+    [0.0, 0.0],
+    [20.0, 0.0],
+    [30.0, 10.0],
+    [30.0, 20.0],
+    [20.0, 30.0],
+    [0.0, 30.0],
+    [-10.0, 20.0],
+    [-10.0, 10.0]
+  ],
+  "closed": true,
+  "source": "synthetic_t1_octagonal_oval",
+  "width": 8.0,
+  "width_source": "synthetic"
+}

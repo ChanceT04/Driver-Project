@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "f1-driving-agent"
+version = "0.1.0"
+description = "Offline driving simulator and learning experiments for an F1 game agent"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+f1-sim = "f1_agent.cli:main"
+f1-telemetry = "f1_agent.telemetry.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
